@@ -38,9 +38,10 @@ public class CharacterLiveComponent : ILiveComponent
         Debug.Log("Get damage = " + damage);
     }
 
-    float ILiveComponent.SetDamage(float damage)
+    void ILiveComponent.SetDamage(float damage)
     {
-        throw new System.NotImplementedException();
+        Health -= damage;
+        Debug.Log("Get damage = " + damage);
     }
 
     private void SetDeath()

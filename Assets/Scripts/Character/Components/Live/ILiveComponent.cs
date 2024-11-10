@@ -11,5 +11,5 @@ public interface ILiveComponent : ICharacterComponent
 
     float Health { get;  }
 
-    public float SetDamage(float damage);
+    public void SetDamage(float damage);
 }
