@@ -15,10 +15,9 @@ public class ImmortalLiveComponent : ILiveComponent
         // throw new NotImplementedException();
     }
 
-    public float SetDamage(float damage)
+    public void SetDamage(float damage)
     {
         Debug.Log("I am immortal");
-        return 0;
     }
 
 }

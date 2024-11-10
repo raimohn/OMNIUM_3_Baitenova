@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyCharacter : Character
@@ -7,21 +5,19 @@ public class EnemyCharacter : Character
     [SerializeField] private AiState currentState;
 
 
-
     private float timeBetweenAttacksCounter = 0;
 
 
-    public override Character CharacterTarget => 
+    public override Character CharacterTarget =>
         GameManager.Instance.CharacterFactory.Player;
 
-    
 
-   
     public override void Initialize()
-    {  
-        base.Initialize(); 
+    {
         LiveComponent = new CharacterLiveComponent();
         DamageComponent = new CharacterDamageComponent();
+        MovableComponent = new CharacterMovementComponent();
+        base.Initialize();
     }
 
 
@@ -44,14 +40,13 @@ public class EnemyCharacter : Character
                     && timeBetweenAttacksCounter <= 0)
                 {
                     DamageComponent.MakeDamage(CharacterTarget);
-                    timeBetweenAttacksCounter = characterData.TimeBetweenAttacks; 
+                    timeBetweenAttacksCounter = characterData.TimeBetweenAttacks;
                 }
-                   
-                if(timeBetweenAttacksCounter > 0)
+
+                if (timeBetweenAttacksCounter > 0)
                     timeBetweenAttacksCounter -= Time.deltaTime;
 
                 break;
         }
     }
-
 }

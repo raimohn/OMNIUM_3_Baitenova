@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterData : MonoBehaviour
@@ -15,11 +13,5 @@ public class CharacterData : MonoBehaviour
     public float TimeBetweenAttacks => timeBetweenAttacks;
     public Transform CharacterTransform => characterTransform;
 
-    public CharacterController CharacterController 
-    { 
-        get 
-        { 
-            return characterController; 
-        } 
-    }
+    public CharacterController CharacterController => characterController;
 }

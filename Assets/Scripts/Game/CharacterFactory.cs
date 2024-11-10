@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,10 +11,7 @@ public class CharacterFactory : MonoBehaviour
     private List<Character> activeCharacters = new List<Character>();
 
 
-    public Character Player
-    {
-        get; private set;
-    }
+    public Character Player { get; private set; }
 
     public List<Character> ActiveCharacters => activeCharacters;
 
@@ -33,18 +29,34 @@ public class CharacterFactory : MonoBehaviour
             {
                 character = disabledCharacters[type].Dequeue();
             }
+            else
+            {
+                Debug.Log("disabledCharacters.Count ==" + disabledCharacters[type].Count);
+            }
         }
         else
         {
             disabledCharacters.Add(type, new Queue<Character>());
+            Debug.Log("cisabled character not containsKey" + type + ", disabledCharacters.Count ==" +
+                      disabledCharacters.Count);
         }
 
         if (character == null)
         {
             character = InstantiateCharacter(type);
         }
+
         activeCharacters.Add(character);
+        character.Initialize();
         return character;
+    }
+
+    public void GameOver()
+    {
+        foreach (var character in activeCharacters)
+        {
+            character.gameObject.SetActive(false);
+        }
     }
 
     public void ReturnCharacter(Character character)
@@ -61,17 +73,18 @@ public class CharacterFactory : MonoBehaviour
         switch (type)
         {
             case CharacterType.Player:
-                character = GameObject.Instantiate(playerCharacterPrefab, null);
+                character = Instantiate(playerCharacterPrefab, null);
                 Player = character;
                 break;
 
             case CharacterType.DefaultEnemy:
-                character = GameObject.Instantiate(enemyCharacterPrefab, null);
+                character = Instantiate(enemyCharacterPrefab, null);
                 break;
             default:
                 Debug.LogError("Unknown character type: " + type);
                 break;
         }
+
         return character;
     }
 }

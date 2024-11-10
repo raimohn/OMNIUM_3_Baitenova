@@ -32,8 +32,10 @@ public class PlayerCharacter : Character
     public override void Initialize()
     {
         base.Initialize();
-
         LiveComponent = new CharacterLiveComponent();
+        LiveComponent.Initialzie(this);
+        DamageComponent = new CharacterDamageComponent();
+        DamageComponent.Initialize(characterData, CharacterTarget);
     }
 
 
@@ -51,9 +53,9 @@ public class PlayerCharacter : Character
         else
         {
             Vector3 rotationDirection = CharacterTarget.transform.position - transform.position;
-            MovableComponent.Rotation(movementVector);
+            MovableComponent.Rotation(rotationDirection);
 
-            if (Input.GetKeyDown("Jump"))
+            if (Input.GetKeyDown(KeyCode.Space))
                 DamageComponent.MakeDamage(CharacterTarget);
         }
 

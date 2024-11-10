@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
             Initialize();
         }
         else
-        { 
+        {
             Destroy(this.gameObject);
         }
     }
@@ -42,36 +42,39 @@ public class GameManager : MonoBehaviour
     {
         if (isGameActive)
             return;
+        // Unfreeze game
+        Time.timeScale = 1;
 
         Character player = characterFactory.GetCharacter(CharacterType.Player);
+        Character enemy = characterFactory.GetCharacter(CharacterType.DefaultEnemy);
         player.transform.position = Vector3.zero;
         player.gameObject.SetActive(true);
-        player.Initialize();
         player.LiveComponent.OnCharacterDeath += CharacterDeathHandler;
+        enemy.transform.position = new Vector3(10f, 0f, 10f);
 
         gameSessionTime = 0;
         timeBetweenEnemySpawn = gameData.TimeBetweenEnemySpawn;
 
         scoreSystem.StartGame();
 
-        isGameActive=true;
+        isGameActive = true;
     }
 
     private void Update()
     {
-        if(!isGameActive)
+        if (!isGameActive)
             return;
 
         gameSessionTime += Time.deltaTime;
         timeBetweenEnemySpawn += Time.deltaTime;
 
-        if(timeBetweenEnemySpawn <= 0)
+        if (timeBetweenEnemySpawn <= 0)
         {
             SpawnEnemy();
             timeBetweenEnemySpawn = gameData.TimeBetweenEnemySpawn;
         }
 
-        if(gameSessionTime >= gameData.SessionTimeSeconds)
+        if (gameSessionTime >= gameData.SessionTimeSeconds)
         {
             GameVictory();
         }
@@ -101,12 +104,15 @@ public class GameManager : MonoBehaviour
         deathCharacter.LiveComponent.OnCharacterDeath -= CharacterDeathHandler;
     }
 
-    
 
     private void GameVictory()
     {
         scoreSystem.EndGame();
         Debug.Log("Victory");
+        characterFactory.GameOver();
+        
+        // freeze game
+        Time.timeScale = 0;
         isGameActive = false;
     }
 
@@ -114,6 +120,10 @@ public class GameManager : MonoBehaviour
     {
         scoreSystem.EndGame();
         Debug.Log("Defeat");
+        characterFactory.GameOver();
+        
+        // freeze game
+        Time.timeScale = 0;
         isGameActive = false;
     }
 }
